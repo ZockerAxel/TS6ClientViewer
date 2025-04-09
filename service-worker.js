@@ -1,5 +1,5 @@
 const pageDomain = "ts5viewer.endercentral.eu";
-const cacheVersion = 9;
+const cacheVersion = 10;
 const beta = pageDomain !== location.hostname;
 const currentCacheKey = `v${cacheVersion}${beta ? "-beta" : ""}`;
 
