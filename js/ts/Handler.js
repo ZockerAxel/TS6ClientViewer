@@ -638,9 +638,11 @@ export default class Handler {
         const allChannelInfos = [...channelInfos.rootChannels];
         const allClientInfos = [...clientInfos];
         
-        for(const channelList of Object.values(channelInfos.subChannels)) {
-            for(const channel of channelList) {
-                allChannelInfos.push(channel);
+        if(channelInfos.subChannels) {
+            for(const channelList of Object.values(channelInfos.subChannels)) {
+                for(const channel of channelList) {
+                    allChannelInfos.push(channel);
+                }
             }
         }
         
