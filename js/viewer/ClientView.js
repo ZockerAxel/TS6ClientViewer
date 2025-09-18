@@ -127,6 +127,11 @@ export default class ClientView extends View {
     createElement() {
         this.#element = document.createElement("div");
         this.#element.classList.add("client");
+        
+        this.#element.setAttribute("client-unique-id", this.#client.getUniqueId());
+        if(this.#client.getMyTeamSpeakId() != "") this.#element.setAttribute("client-myteamspeak-id", this.#client.getMyTeamSpeakId());
+        if(this.#client.getCountryCode() != "") this.#element.setAttribute("client-country-code", this.#client.getCountryCode());
+        
         this.#element.classList.toggle("regular_client", this.#client.getType() === 0);
         this.#element.classList.toggle("has_avatar", this.#client.getAvatarUrl() !== null);
         if(this.#client.getAvatarUrl() !== null) this.#element.style.setProperty("--avatar", `url("${this.#client.getAvatarUrl()}")`);

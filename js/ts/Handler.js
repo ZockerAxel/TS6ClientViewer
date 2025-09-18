@@ -760,8 +760,15 @@ export default class Handler {
      */
     #loadClient(server, clientId, properties) {
         const clientType = properties.type;
+        
+        const uniqueId = properties.uniqueIdentifier;
+        const myTeamSpeakId = properties.myteamspeakId;
+        
         const nickname = properties.nickname;
+        const countryCode = properties.country;
         const avatarUrl = readMyTsAvatarURL(properties.myteamspeakAvatar);
+        
+        //Status
         const talking = properties.flagTalking;
         const muted = properties.inputMuted;
         const mutedLocally = properties.isMuted;
@@ -771,7 +778,9 @@ export default class Handler {
         const awayMessage = properties.awayMessage;
         const talkPower = properties.talkPower;
         
-        const client = new Client(server, clientId, clientType, nickname, avatarUrl, talking, muted, mutedLocally, hardwareMuted, soundMuted, away, awayMessage, talkPower);
+        console.log(properties);
+        
+        const client = new Client(server, clientId, uniqueId, myTeamSpeakId, clientType, nickname, countryCode, avatarUrl, talking, muted, mutedLocally, hardwareMuted, soundMuted, away, awayMessage, talkPower);
         
         return client;
     }
