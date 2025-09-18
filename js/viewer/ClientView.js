@@ -137,6 +137,11 @@ export default class ClientView extends View {
         if(this.#client.getAvatarUrl() !== null) this.#element.style.setProperty("--avatar", `url("${this.#client.getAvatarUrl()}")`);
         if(this.#client.isLocalClient()) this.#element.classList.add("self");
         
+        //Custom Prefix Image intended to allow custom css to add image
+        const customPrefixImageElement = document.createElement("img");
+        customPrefixImageElement.classList.add("custom-prefix-image");
+        this.#element.appendChild(customPrefixImageElement);
+        
         for(const status of CLIENT_STATUSES) {
             const statusElement = document.createElement("div");
             statusElement.classList.add("status");
@@ -158,6 +163,11 @@ export default class ClientView extends View {
         this.#awayMessageElement.textContent = `${this.#client.getAwayMessage()}`;
         
         this.#element.appendChild(this.#awayMessageElement);
+        
+        //Custom Suffix Image intended to allow custom css to add image
+        const customSuffixImageElement = document.createElement("img");
+        customSuffixImageElement.classList.add("custom-suffix-image");
+        this.#element.appendChild(customSuffixImageElement);
         
         this.#element.style.setProperty("--height", `${this.#element.clientHeight}`);
         
