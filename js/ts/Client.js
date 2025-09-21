@@ -6,8 +6,12 @@ export default class Client {
     
     //Info
     #id;
+    #uniqueId;
+    #myTeamSpeakId;
+    
     #type;
     #nickname;
+    #countryCode;
     #avatarUrl;
     
     //Status
@@ -47,8 +51,11 @@ export default class Client {
      * 
      * @param {Server} server The Server that this Client belongs to
      * @param {number} id Client ID
+     * @param {string} uniqueId Client Unique ID
+     * @param {string} myTeamSpeakId Client myTeamSpeak Id
      * @param {number} type Client Type (0 = Client, 1 = ServerQuery Client)
      * @param {string} nickname Client Nickname
+     * @param {string} countryCode Client Country Code
      * @param {string | null} avatarUrl The Avatar URL (from myTeamspeak-Avatar)
      * @param {boolean} talking Whether the client is currently talking
      * @param {boolean} muted Whether the client is currently muted
@@ -59,12 +66,16 @@ export default class Client {
      * @param {string} awayMessage The away message (if they are away)
      * @param {number} talkPower The talk power (affects client order)
      */
-    constructor(server, id, type, nickname, avatarUrl, talking, muted, mutedLocally, hardwareMuted, soundMuted, away, awayMessage, talkPower) {
+    constructor(server, id, uniqueId, myTeamSpeakId, type, nickname, countryCode, avatarUrl, talking, muted, mutedLocally, hardwareMuted, soundMuted, away, awayMessage, talkPower) {
         this.#server = server;
         
         this.#id = id;
+        this.#uniqueId = uniqueId;
+        this.#myTeamSpeakId = myTeamSpeakId;
+        
         this.#type = type;
         this.#nickname = nickname;
+        this.#countryCode = countryCode;
         this.#avatarUrl = avatarUrl;
         
         this.#talking = talking;
@@ -105,6 +116,14 @@ export default class Client {
     
     getId() {
         return this.#id;
+    }
+    
+    getUniqueId() {
+        return this.#uniqueId;
+    }
+    
+    getMyTeamSpeakId() {
+        return this.#myTeamSpeakId;
     }
     
     isLocalClient() {
@@ -153,6 +172,10 @@ export default class Client {
     
     getNickname() {
         return this.#nickname;
+    }
+    
+    getCountryCode() {
+        return this.#countryCode;
     }
     
     /**

@@ -59,6 +59,7 @@ export default class Interface {
         interfaceDisableLocalClientColor.checked = !localClientColorEnabled;
         interfaceShowQueryClients.checked = queryClientsShown;
         
+        interfaceShowAvatars.disabled = interfaceHideStatus.checked;
         interfaceDisableLocalClientColor.disabled = interfaceHideLocalClient.checked;
         
         interfaceScaleSlider.value = `${Math.max(0, Math.min(4, scale))}`;
@@ -138,6 +139,10 @@ export default class Interface {
             interfaceFollowChannel.checked = false;
             self.#viewer.setChannelFollowed(false);
             self.updateGeneratedURL();
+        });
+        
+        interfaceHideStatus.addEventListener("change", function() {
+            interfaceShowAvatars.disabled = this.checked;
         });
         
         interfaceHideLocalClient.addEventListener("change", function() {

@@ -127,10 +127,21 @@ export default class ClientView extends View {
     createElement() {
         this.#element = document.createElement("div");
         this.#element.classList.add("client");
+        
+        this.#element.setAttribute("client-nickname", this.#client.getNickname());
+        this.#element.setAttribute("client-unique-id", this.#client.getUniqueId());
+        if(this.#client.getMyTeamSpeakId() != "") this.#element.setAttribute("client-myteamspeak-id", this.#client.getMyTeamSpeakId());
+        if(this.#client.getCountryCode() != "") this.#element.setAttribute("client-country-code", this.#client.getCountryCode());
+        
         this.#element.classList.toggle("regular_client", this.#client.getType() === 0);
         this.#element.classList.toggle("has_avatar", this.#client.getAvatarUrl() !== null);
         if(this.#client.getAvatarUrl() !== null) this.#element.style.setProperty("--avatar", `url("${this.#client.getAvatarUrl()}")`);
         if(this.#client.isLocalClient()) this.#element.classList.add("self");
+        
+        //Custom Prefix Image intended to allow custom css to add image
+        const customPrefixImageElement = document.createElement("img");
+        customPrefixImageElement.classList.add("custom-prefix-image");
+        this.#element.appendChild(customPrefixImageElement);
         
         for(const status of CLIENT_STATUSES) {
             const statusElement = document.createElement("div");
@@ -153,6 +164,11 @@ export default class ClientView extends View {
         this.#awayMessageElement.textContent = `${this.#client.getAwayMessage()}`;
         
         this.#element.appendChild(this.#awayMessageElement);
+        
+        //Custom Suffix Image intended to allow custom css to add image
+        const customSuffixImageElement = document.createElement("img");
+        customSuffixImageElement.classList.add("custom-suffix-image");
+        this.#element.appendChild(customSuffixImageElement);
         
         this.#element.style.setProperty("--height", `${this.#element.clientHeight}`);
         

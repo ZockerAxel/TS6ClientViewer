@@ -149,6 +149,20 @@ main:not(.aligned_to_top) {
     margin-inline-start: 0;
 }
 
+.custom-prefix-image {
+    --padding: 0.4em;
+    --calculated-height: calc(var(--height) - (var(--padding) * 2));
+    
+    height: var(--calculated-height);
+}
+
+.custom-suffix-image {
+    --padding: 0.4em;
+    --calculated-height: calc(var(--height) - (var(--padding) * 2));
+    
+    height: var(--calculated-height);
+}
+
 .server > .channel {
     margin: 0;
 }
