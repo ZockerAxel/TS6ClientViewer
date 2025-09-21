@@ -1,4 +1,4 @@
-# TS5ClientViewer: TeamSpeak 5 Client Viewer for Stream & Video Overlays
+# TS6ClientViewer: TeamSpeak 6 Client Viewer for Stream & Video Overlays
 
 ![Preview|327x112](https://discourse-forums-images.s3.dualstack.us-east-2.amazonaws.com/original/3X/e/4/e4d6dc9e83a23ed933427f1d412a901e1d7d4614.png)
 
