@@ -778,8 +778,6 @@ export default class Handler {
         const awayMessage = properties.awayMessage;
         const talkPower = properties.talkPower;
         
-        console.log(properties);
-        
         const client = new Client(server, clientId, uniqueId, myTeamSpeakId, clientType, nickname, countryCode, avatarUrl, talking, muted, mutedLocally, hardwareMuted, soundMuted, away, awayMessage, talkPower);
         
         return client;
