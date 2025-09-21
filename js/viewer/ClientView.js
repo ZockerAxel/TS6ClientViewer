@@ -128,6 +128,7 @@ export default class ClientView extends View {
         this.#element = document.createElement("div");
         this.#element.classList.add("client");
         
+        this.#element.setAttribute("client-nickname", this.#client.getNickname());
         this.#element.setAttribute("client-unique-id", this.#client.getUniqueId());
         if(this.#client.getMyTeamSpeakId() != "") this.#element.setAttribute("client-myteamspeak-id", this.#client.getMyTeamSpeakId());
         if(this.#client.getCountryCode() != "") this.#element.setAttribute("client-country-code", this.#client.getCountryCode());
