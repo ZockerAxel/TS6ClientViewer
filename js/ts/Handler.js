@@ -12,13 +12,13 @@ export default class Handler {
     #apiKey;
     #apiPort;
     #app;
-    /**@type {RemoteAppConnection} */
+    /**@type {RemoteAppConnection | undefined} */
     #api;
     
     /**@type {Server[]} */
     #servers = [];
     
-    /**@type {Server} */
+    /**@type {Server | undefined} */
     #activeServer;
     
     //Callbacks
@@ -41,7 +41,9 @@ export default class Handler {
     }
     
     restart() {
-        this.#api.disconnect();
+		if(!this.#api) return;
+		
+		this.#api.disconnect();
         this.#api.connect();
     }
     
@@ -298,9 +300,13 @@ export default class Handler {
     }
     
     registerAuthEvent() {
+		if(!this.#api) return;
+		
         const self = this;
         this.#api.addEventListener("ts:auth", function(data) {
             self.#onAuth(data);
+			
+			if(!self.#api) return;
             
             self.#api.addEventListener("api:disconnect", function() {
                 viewerDiv.textContent = "";
@@ -310,6 +316,8 @@ export default class Handler {
     }
     
     registerClientMovedEvent() {
+		if(!this.#api) return;
+		
         const self = this;
         this.#api.addEventListener("ts:clientMoved", function(data) {
             self.#onClientMoved(data);
@@ -317,7 +325,9 @@ export default class Handler {
     }
     
     registerClientPropertiesUpdatedEvent() {
-        const self = this;
+        if(!this.#api) return;
+		
+		const self = this;
         this.#api.addEventListener("ts:clientPropertiesUpdated", function(data) {
             const serverId = Number.parseInt(data.connectionId);
             
@@ -336,6 +346,8 @@ export default class Handler {
     }
     
     registerTalkStatusChangedEvent() {
+		if(!this.#api) return;
+		
         const self = this;
         this.#api.addEventListener("ts:talkStatusChanged", function(data) {
             const serverId = Number.parseInt(data.connectionId);
@@ -359,6 +371,8 @@ export default class Handler {
     }
     
     registerConnectStatusChangedEvent() {
+		if(!this.#api) return;
+		
         const self = this;
         this.#api.addEventListener("ts:connectStatusChanged", function(data) {
             const connectionId = Number.parseInt(data.connectionId);
@@ -393,6 +407,8 @@ export default class Handler {
     }
     
     registerChannelsEvent() {
+		if(!this.#api) return;
+		
         const self = this;
         this.#api.addEventListener("ts:channels", function(data) {
             const connectionId = Number.parseInt(data.connectionId);
@@ -414,6 +430,8 @@ export default class Handler {
     }
     
     registerChannelCreatedEvent() {
+		if(!this.#api) return;
+		
         const self = this;
         this.#api.addEventListener("ts:channelCreated", function(data) {
             const connectionId = Number.parseInt(data.connectionId);
@@ -441,6 +459,8 @@ export default class Handler {
     }
     
     registerChannelMovedEvent() {
+		if(!this.#api) return;
+		
         const self = this;
         this.#api.addEventListener("ts:channelMoved", function(data) {
             const connectionId = Number.parseInt(data.connectionId);
@@ -468,6 +488,8 @@ export default class Handler {
     }
     
     registerChannelEditedEvent() {
+		if(!this.#api) return;
+		
         const self = this;
         this.#api.addEventListener("ts:channelEdited", function(data) {
             const connectionId = Number.parseInt(data.connectionId);
@@ -490,6 +512,8 @@ export default class Handler {
     }
     
     registerChannelDeletedEvent() {
+		if(!this.#api) return;
+		
         const self = this;
         this.#api.addEventListener("ts:channelDeleted", function(data) {
             const connectionId = Number.parseInt(data.connectionId);
@@ -510,6 +534,7 @@ export default class Handler {
         });
     }
     
+    //@ts-ignore
     #onAuth(payload) {
         hintScreenDiv.classList.add("hidden");
         this.#servers.length = 0;//Clear Servers
@@ -522,6 +547,7 @@ export default class Handler {
         this.updateActiveServer();
     }
     
+    //@ts-ignore
     #onClientMoved(payload) {
         const self = this;
         
@@ -630,11 +656,13 @@ export default class Handler {
         channel.updateName(name);
     }
     
+    //@ts-ignore
     #loadServer({id, properties, channelInfos = {rootChannels: [], subChannels: {}}, clientInfos = [], clientId}) {
         const self = this;
         
         const server = new Server(id, clientId, properties.name);
         
+        //@ts-ignore
         const allChannelInfos = [...channelInfos.rootChannels];
         const allClientInfos = [...clientInfos];
         

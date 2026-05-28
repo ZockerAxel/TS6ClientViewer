@@ -6,10 +6,10 @@ import Viewer from "./Viewer.js";
 
 export default class ServerView extends View {
     #server;
-    /**@type {HTMLDivElement} */
+    /**@type {HTMLDivElement | undefined} */
     #element;
     
-    /**@type {ChannelView} */
+    /**@type {ChannelView | undefined} */
     #rootChannelView;
     
     /**
@@ -37,6 +37,8 @@ export default class ServerView extends View {
     }
     
     createElement() {
+		if(!this.#rootChannelView) return;
+		
         this.#element = document.createElement("div");
         this.#element.classList.add("server", "container");
         
@@ -47,11 +49,11 @@ export default class ServerView extends View {
     }
     
     onTreeDisplayed() {
-        this.#rootChannelView.onTreeDisplayed();
+        this.#rootChannelView?.onTreeDisplayed();
     }
     
     propagateViewerUpdate() {
-        this.#rootChannelView.propagateViewerUpdate();
+        this.#rootChannelView?.propagateViewerUpdate();
         this.onViewerUpdate();
     }
 }

@@ -120,6 +120,7 @@ function showViewer(app, handler, apiPort) {
         
         ui.show();
         
+        //@ts-ignore
         window["UI"] = ui;
     }
 }

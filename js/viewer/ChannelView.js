@@ -8,15 +8,15 @@ export default class ChannelView extends View {
     #parentView;
     
     #channel;
-    /**@type {HTMLDivElement} */
+    /**@type {HTMLDivElement | undefined} */
     #element;
     
-    /**@type {HTMLDivElement} */
+    /**@type {HTMLDivElement | undefined} */
     #channelNameElement;
     
-    /**@type {HTMLDivElement} */
+    /**@type {HTMLDivElement | undefined} */
     #clientContainer;
-    /**@type {HTMLDivElement} */
+    /**@type {HTMLDivElement | undefined} */
     #channelContainer;
     
     /**@type {ClientView[]} */
@@ -44,7 +44,9 @@ export default class ChannelView extends View {
         const self = this;
         
         this.#channel.onNameChange(function(name) {
+            //@ts-ignore
             self.#channelNameElement.textContent = name;
+            //@ts-ignore
             self.#element.classList.toggle("spacer", self.#channel.isSpacer());
         });
         
@@ -136,7 +138,7 @@ export default class ChannelView extends View {
      * @param {boolean} hidden Whether its hidden
      */
     setChannelNameHidden(hidden) {
-        this.#channelNameElement.classList.toggle("hidden", hidden);
+        this.#channelNameElement?.classList.toggle("hidden", hidden);
     }
     
     buildTree() {
@@ -210,7 +212,7 @@ export default class ChannelView extends View {
      */
     #addClientView(clientView) {
         const clientElement = clientView.createElement();
-        this.#clientContainer.appendChild(clientElement);
+        this.#clientContainer?.appendChild(clientElement);
     }
     
     #updateClientTree() {
@@ -218,7 +220,7 @@ export default class ChannelView extends View {
             for(const clientView of this.#clientViews) {
                 if(clientView.getClient() !== client) continue;
                 
-                this.#clientContainer.appendChild(clientView.getElement());
+                this.#clientContainer?.appendChild(clientView.getElement());
                 break;
             }
         }
@@ -230,15 +232,17 @@ export default class ChannelView extends View {
      */
     #addChannelView(channelView) {
         const channelElement = channelView.createElement();
-        this.#channelContainer.appendChild(channelElement);
+        this.#channelContainer?.appendChild(channelElement);
     }
     
     #updateChannelTree() {
         for(const channel of this.#channel.getSubChannels()) {
             for(const channelView of this.#channelViews) {
                 if(channelView.getChannel() !== channel) continue;
+				const element = channelView.getElement();
+				if(!element) continue;
                 
-                this.#channelContainer.appendChild(channelView.getElement());
+                this.#channelContainer?.appendChild(element);
                 break;
             }
         }
@@ -266,7 +270,7 @@ export default class ChannelView extends View {
         if(!this.getViewer().isChannelFollowed()) return;
         if(!this.isLocalClientsChannel()) return;
         
-        this.#element.scrollIntoView({
+        this.#element?.scrollIntoView({
             behavior: "smooth",
         });
     }
@@ -275,15 +279,15 @@ export default class ChannelView extends View {
         if(!this.getViewer().isSpecificChannelFollowed()) return;
         if(this.getViewer().getFollowChannelName() !== this.getChannel().getName()) return;
         
-        this.#element.scrollIntoView({
+        this.#element?.scrollIntoView({
             behavior: "smooth",
         });
     }
     
     #updateHasClients() {
-        this.#element.classList.toggle("has_clients", this.#hasClients());
-        this.#element.classList.toggle("has_regular_clients", this.#hasRegularClients());
-        this.#element.classList.toggle("has_nonlocal_clients", this.#hasNonLocalClient());
+        this.#element?.classList.toggle("has_clients", this.#hasClients());
+        this.#element?.classList.toggle("has_regular_clients", this.#hasRegularClients());
+        this.#element?.classList.toggle("has_nonlocal_clients", this.#hasNonLocalClient());
         
         this.onTreeDisplayed();
     }
@@ -323,6 +327,6 @@ export default class ChannelView extends View {
     }
     
     remove() {
-        this.#element.remove();
+        this.#element?.remove();
     }
 }

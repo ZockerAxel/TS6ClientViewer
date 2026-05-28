@@ -19,19 +19,19 @@ export default class ClientView extends View {
     #channelView;
     
     #client;
-    /**@type {HTMLDivElement} */
+    /**@type {HTMLDivElement | undefined} */
     #element;
     
-    /**@type {HTMLDivElement} */
+    /**@type {HTMLDivElement | undefined} */
     #nicknameElement;
     
-    /**@type {string} */
+    /**@type {string | undefined} */
     #currentStatus;
     
     /**@type {Map<string, HTMLDivElement>} */
     #statusElements = new Map();
     
-    /**@type {HTMLDivElement} */
+    /**@type {HTMLDivElement | undefined} */
     #awayMessageElement;
     
     /**
@@ -57,16 +57,21 @@ export default class ClientView extends View {
         });
         
         this.#client.onAwayChange(function(newValue, message) {
+            //@ts-ignore
             self.#awayMessageElement.textContent = message;
+            //@ts-ignore
             self.#awayMessageElement.classList.toggle("hidden", !newValue || message.length === 0);
         });
         
         this.#client.onNicknameChange(function(newValue) {
+			//@ts-ignore
             self.#nicknameElement.textContent = newValue;
         });
         
         this.#client.onAvatarUrlChange(function(newValue) {
+			//@ts-ignore
             self.#element.classList.toggle("has_avatar", newValue !== null);
+			//@ts-ignore
             self.#element.style.setProperty("--avatar", `url("${newValue}")`);
         });
     }
@@ -82,9 +87,9 @@ export default class ClientView extends View {
             statusElement.classList.toggle("hidden", status !== this.#currentStatus);
         }
         
-        this.#awayMessageElement.classList.toggle("hidden", !this.#client.isAway() || this.#client.getAwayMessage().length === 0);
+        this.#awayMessageElement?.classList.toggle("hidden", !this.#client.isAway() || this.#client.getAwayMessage().length === 0);
         
-        this.#element.classList.toggle("talking", this.#currentStatus === "talking");
+        this.#element?.classList.toggle("talking", this.#currentStatus === "talking");
         
         this.onTreeDisplayed();
     }
@@ -178,8 +183,8 @@ export default class ClientView extends View {
     }
     
     onTreeDisplayed() {
-        this.#element.style.setProperty("--height", "0");
-        this.#element.style.setProperty("--height", `${this.#element.clientHeight}px`);
+        this.#element?.style.setProperty("--height", "0");
+        this.#element?.style.setProperty("--height", `${this.#element.clientHeight}px`);
     }
     
     propagateViewerUpdate() {
@@ -187,6 +192,6 @@ export default class ClientView extends View {
     }
     
     remove() {
-        this.#element.remove();
+        this.#element?.remove();
     }
 }
