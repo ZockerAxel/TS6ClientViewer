@@ -77,7 +77,15 @@ export default class RemoteAppConnection {
         const handlerList = this.#getHandlerList(event);
         
         for(const callback of handlerList) {
-            callback(data);
+			try {
+				callback(data);
+			} catch(err) {
+				logger.log({
+					message: "Event Handler returned an error",
+					event: event,
+					error: err,
+				}, LOG_CATEGORY);
+			}
         }
     }
     
