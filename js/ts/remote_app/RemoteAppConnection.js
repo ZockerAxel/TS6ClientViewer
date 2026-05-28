@@ -6,7 +6,7 @@ const LOG_CATEGORY = "connection";
 export default class RemoteAppConnection {
     #config;
     
-    /**@type {WebSocket} */
+    /**@type {WebSocket | undefined} */
     #webSocket;
     
     #authenticated = false;
@@ -27,11 +27,11 @@ export default class RemoteAppConnection {
     }
     
     isConnecting() {
-        return this.#webSocket.readyState === WebSocket.CONNECTING;
+        return this.#webSocket && this.#webSocket.readyState === WebSocket.CONNECTING;
     }
     
     isConnected() {
-        return this.#webSocket.readyState === WebSocket.OPEN;
+        return this.#webSocket && this.#webSocket.readyState === WebSocket.OPEN;
     }
     
     isAuthenticated() {
@@ -144,6 +144,8 @@ export default class RemoteAppConnection {
     }
     
     disconnect() {
+		if(!this.#webSocket) return;
+		
         this.#webSocket.close();
     }
     
@@ -187,7 +189,8 @@ export default class RemoteAppConnection {
     send(data, ignoreAuth = false) {
         if(!this.isConnected()) throw new Error("Tried to send data to API while not connected.");
         if(!ignoreAuth && !this.isAuthenticated()) throw new Error("Tried to send data to API while not authenticated");
-        
+        if(!this.#webSocket) return;
+		
         this.#webSocket.send(JSON.stringify(data));
     }
     

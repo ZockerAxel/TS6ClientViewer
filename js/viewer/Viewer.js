@@ -24,39 +24,53 @@ export default class Viewer {
     /**@type {*} */
     #serverSelectModeOptions;
     /**@type {number} */
+    //@ts-ignore
     #scale;
     /**@type {string} */
+    //@ts-ignore
     #horizontalAlignment;
     /**@type {string} */
+    //@ts-ignore
     #verticalAlignment;
     /**@type {boolean} */
+    //@ts-ignore
     #localClientColorEnabled;
     /**@type {boolean} */
     #channelHidden;
     /**@type {boolean} */
+    //@ts-ignore
     #silentClientsHidden;
     /**@type {boolean} */
+    //@ts-ignore
     #statusHidden;
     /**@type {boolean} */
+    //@ts-ignore
     #avatarsShown;
     /**@type {boolean} */
+    //@ts-ignore
     #spacersShown;
     /**@type {boolean} */
+    //@ts-ignore
     #emptyChannelsHidden;
     /**@type {boolean} */
+    //@ts-ignore
     #queryClientsShown;
     /**@type {boolean} */
     #channelFollowed;
     /**@type {string} */
     #followChannelName;
     /**@type {boolean} */
+    //@ts-ignore
     #awayMessageHidden;
     /**@type {boolean} */
+    //@ts-ignore
     #subChannelsShown;
     /**@type {boolean} */
+    //@ts-ignore
     #localClientHidden;
     
     /**@type {Server} */
+    //@ts-ignore
     #server;
     
     /**@type {ServerView | ChannelView | null} */
@@ -140,7 +154,11 @@ export default class Viewer {
     }
     
     #selectActiveServer() {
-        this.setServer(this.#handler.getActiveServer());
+		const server = this.#handler.getActiveServer();
+		
+		if(!server) return;
+		
+        this.setServer(server);
     }
     
     #selectServerByName() {
@@ -503,6 +521,7 @@ export default class Viewer {
         serverView.buildTree();
         
         const tree = serverView.createElement();
+        //@ts-ignore
         viewerDiv.appendChild(tree);
         serverView.onTreeDisplayed();
     }
