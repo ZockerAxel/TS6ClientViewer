@@ -768,10 +768,16 @@ export default class Handler {
                 const channelId = Number.parseInt(channelInfo.id);
                 const channelName = channelInfo.properties.name;
                 const channelOrder = Number.parseInt(channelInfo.order);
-                
-                const channel = new Channel(server, channelId, channelName, channelOrder);
-                
-                parent.addSubChannel(channel);
+				
+				const existingChannel = server.getChannel(channelId);
+				
+				if(existingChannel) {
+					existingChannel.updateName(channelName);
+					existingChannel.updateOrder(channelOrder);
+				} else {
+					const channel = new Channel(server, channelId, channelName, channelOrder);
+					parent.addSubChannel(channel);
+				}
                 
                 const index = allChannelInfos.indexOf(channelInfo);
                 if(index === -1) continue;
