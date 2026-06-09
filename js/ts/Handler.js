@@ -750,7 +750,7 @@ export default class Handler {
         }
         
         while(allChannelInfos.length > 0) {
-            logger.log({message: "Collecting Channels ...", remainingChannels: allChannelInfos.length});
+            logger.log({message: "Collecting Channels ...", server: server, remainingChannels: allChannelInfos.length});
             
             for(const channelInfo of [...allChannelInfos]) {
                 const parentId = channelInfo.parentId;
@@ -772,7 +772,7 @@ export default class Handler {
             }
         }
         
-        logger.log({message: "Channels collected."});
+        logger.log({message: "Channels collected.", server: server});
         
         //Sort all channels initally to make sure they are in the correct order (they should already be given in the correct order, but you can never be sure enough)
         server.getRootChannel().sortSubChannelsRecursively();
