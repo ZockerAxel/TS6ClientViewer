@@ -749,7 +749,14 @@ export default class Handler {
             }
         }
         
+        let channelCollectIterations = 0;
+        
         while(allChannelInfos.length > 0) {
+            if(channelCollectIterations >= 1000) {
+                logger.error({message: "Could not collect all Channels. Are they not part of the server tree?", uncollectedChannels: [...allChannelInfos], server: server});
+                break;
+            }
+            
             logger.log({message: "Collecting Channels ...", server: server, remainingChannels: allChannelInfos.length});
             
             for(const channelInfo of [...allChannelInfos]) {
@@ -770,6 +777,8 @@ export default class Handler {
                 if(index === -1) continue;
                 allChannelInfos.splice(index, 1);
             }
+            
+            channelCollectIterations++;
         }
         
         logger.log({message: "Channels collected.", server: server});
