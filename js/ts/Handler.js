@@ -608,9 +608,11 @@ export default class Handler {
             
             const oldChannel = existingClient.getChannel();
             
-            oldChannel?.removeClient(existingClient);
-            
             const to = server.getChannel(channelId);
+            
+			if(to == oldChannel) return;
+			
+            oldChannel?.removeClient(existingClient);
             
             if(to === null) throw new Error(`Client '${existingClient.getNickname()}' (ID: ${clientId}) moved into unkown Channel (ID: ${channelId})`);
             
