@@ -578,8 +578,10 @@ export default class Handler {
         
         const properties = payload.properties;
         
-        if(properties !== undefined) {
-            //If properties exist, it's a freshly connected client
+		const existingClient = server.getClient(clientId);
+		
+        if(properties !== undefined && !existingClient) {
+            //If properties exist and client is nonexistant, it's a freshly connected client
             const client = this.#loadClient(server, clientId, properties);
             
             logger.log({message: "Client connected", client: client});
@@ -602,26 +604,23 @@ export default class Handler {
                 });
             }
         } else {
-            //If properties don't exist, the client changed channels
-            const client = server.getClient(clientId);
+            if(existingClient === null) throw new Error(`Unknown Client (ID: ${clientId}) moved into a Channel`);
             
-            if(client === null) throw new Error(`Unknown Client (ID: ${clientId}) moved into a Channel`);
+            const oldChannel = existingClient.getChannel();
             
-            const oldChannel = client.getChannel();
-            
-            oldChannel?.removeClient(client);
+            oldChannel?.removeClient(existingClient);
             
             const to = server.getChannel(channelId);
             
-            if(to === null) throw new Error(`Client '${client.getNickname()}' (ID: ${clientId}) moved into unkown Channel (ID: ${channelId})`);
+            if(to === null) throw new Error(`Client '${existingClient.getNickname()}' (ID: ${clientId}) moved into unkown Channel (ID: ${channelId})`);
             
-            to.addClient(client);
+            to.addClient(existingClient);
             
-            if(client.isLocalClient()) {
+            if(existingClient.isLocalClient()) {
                 server.updateLocalClientChannel(to);
             }
             
-            logger.log({message: "Client switched Channel", client: client, from: oldChannel, to: to});
+            logger.log({message: "Client switched Channel", client: existingClient, from: oldChannel, to: to});
         }
     }
     
